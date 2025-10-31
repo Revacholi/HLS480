@@ -1,0 +1,50 @@
+{
+"c_function_name" : "rgb2i",
+"rtl_top_module_name" : "rgb2i",
+"c_files" : [{ 
+                  "c_file" : "rtl/rgb2i.cpp",
+                  "cflag" : ""
+                }],
+"rtl_files" : [
+                "rtl/rgb2i.v"
+              ],
+"c_parameters" : [{
+                   "c_name" : "rgb",
+                   "c_port_direction" : "in",
+                   "rtl_ports" : {
+                                   "FIFO_empty_flag" : "rgb_empty_n",
+                                   "FIFO_read_enable" : "rgb_read",
+                                   "FIFO_data_read_in" : "rgb_dout"
+                                 }
+                  },
+                  {
+                   "c_name" : "i",
+                   "c_port_direction" : "out",
+                   "rtl_ports" : {
+                                   "FIFO_full_flag" : "i_full_n",
+                                   "FIFO_write_enable" : "i_write",
+                                   "FIFO_data_write_out" : "i_din"
+                                 }
+                  }],
+"rtl_common_signal" : {
+                    "module_clock"                    : "ap_clk",
+                    "module_reset"                    : "ap_rst",
+                    "module_clock_enable"             : "ap_ce",
+                    "ap_ctrl_chain_protocol_idle"     : "",
+                    "ap_ctrl_chain_protocol_start"    : "",
+                    "ap_ctrl_chain_protocol_ready"    : "",
+                    "ap_ctrl_chain_protocol_done"     : "",
+                    "ap_ctrl_chain_protocol_continue" : ""
+},
+"rtl_performance" : {
+                     "latency" : "0",
+                     "II" : "0"
+                    },
+"rtl_resource_usage" : {
+                        "FF" : "0",
+                        "LUT" : "0",
+                        "BRAM" : "0",
+                        "URAM" : "0",
+                        "DSP" : "0"
+                       }
+}
