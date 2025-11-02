@@ -1,11 +1,7 @@
 
 #include "krnl_fir.h"
 
-void krnl_fir(int& x, int& y) {
-#pragma HLS pipeline
-#pragma HLS INTERFACE axis port=x
-#pragma HLS INTERFACE axis port=y
-#pragma HLS INTERFACE ap_ctrl_none port=return
+void krnl_fir(int x, int& y) {
     static int delay[TAPS] = {0};
 
     int sum = 0;

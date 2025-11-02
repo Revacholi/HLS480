@@ -1,31 +1,24 @@
 {
-"c_function_name" : "rgb2i",
-"rtl_top_module_name" : "rgb2i",
+"c_function_name" : "rgb2i_rtl",
+"rtl_top_module_name" : "rgb2i_rtl",
 "c_files" : [{ 
-                  "c_file" : "rtl/rgb2i.cpp",
+                  "c_file" : "rtl/rgb2i_rtl.cpp",
                   "cflag" : ""
                 }],
 "rtl_files" : [
-                "rtl/rgb2i.v"
+                "rtl/rgb2i_rtl.v"
               ],
 "c_parameters" : [{
                    "c_name" : "rgb",
                    "c_port_direction" : "in",
                    "rtl_ports" : {
-                                   "FIFO_empty_flag" : "rgb_empty_n",
-                                   "FIFO_read_enable" : "rgb_read",
-                                   "FIFO_data_read_in" : "rgb_dout"
-                                 }
-                  },
-                  {
-                   "c_name" : "i",
-                   "c_port_direction" : "out",
-                   "rtl_ports" : {
-                                   "FIFO_full_flag" : "i_full_n",
-                                   "FIFO_write_enable" : "i_write",
-                                   "FIFO_data_write_out" : "i_din"
+                                   "data_read_in" : "rgb"
                                  }
                   }],
+"c_return" : {
+  "c_port_direction" : "in",
+  "rtl_ports" : "i"
+},
 "rtl_common_signal" : {
                     "module_clock"                    : "ap_clk",
                     "module_reset"                    : "ap_rst",
