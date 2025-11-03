@@ -1,7 +1,7 @@
 
 #include "krnl_fir.h"
 
-void krnl_fir(int x, int& y) {
+void krnl_fir(int& x, int& y) {
     static int delay[TAPS] = {0};
 
     int sum = 0;
