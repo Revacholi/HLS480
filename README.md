@@ -103,3 +103,26 @@ https://raw.githubusercontent.com/KastnerRG/pp4fpgas/gh-pages/main.pdf
 We will see a lot of AMBA protocols, like AXI or AXI Stream, when working with Vitis HLS. You don't have to know how these work under the hood, but it might be good to at least have seen how the ready-valid handshakes in AXI stream work.
 - AXI: https://developer.arm.com/documentation/ihi0022/latest/
 - AXI stream: https://developer.arm.com/documentation/ihi0051/latest/
+
+
+## Vitis python interface
+Some have commented on the slugishness of accessing the vitis GUI over an SSH tunnel, to get around this, vitis can also be controlled using a python based CLI.
+
+After having set a workspace, and generated the initial component, by for example running:
+```bash
+make krnl_fir
+```
+The vitis interactive python shell can then be launched by running:
+```bash
+vitis -i
+```
+Then, run something like this:
+```python
+client = vitis.create_client()
+client.set_workspace("_x.xilinx_u55c_gen3x16_xdma_3_202210_1")
+fir = client.get_component("krnl_fir")
+fir.execute("C_SIMULATION") #This runs the C Simulation
+fir.execute("SYNTHESIS") #This runs the C Synthesis
+fir.execute("CO_SIMULATION") #This runs the C/RTL Co-simulation
+```
+The shell can be kept open and operations rerun after changing the source code, and the reports can be found as human readable `.rpt` files in the `reports` folder, so for `krnl_fir`:s synthesis report, this would be `_x.xilinx_u55c_gen3x16_xdma_3_202210_1/krnl_fir/krnl_fir/reports/hls_compile.rpt`.

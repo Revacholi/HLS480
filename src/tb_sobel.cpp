@@ -51,7 +51,7 @@ static bool save_image_pgm(const string &fname, const vector<uint8_t> &gray, uns
 }
 
 int main(int argc, char **argv) {
-    const string in_file  = (argc > 1) ? argv[1] : "data/in0.ppm";
+    const string in_file  = (argc > 1) ? argv[1] : "../../../../../../data/in0.ppm";
     const string out_file = (argc > 2) ? argv[2] : "out.pgm";
 
     vector<uint8_t> in_rgb;
@@ -87,8 +87,7 @@ int main(int argc, char **argv) {
     }
 
     // Call kernel (C-simulation)
-    while(!in_stream.empty()) 
-        krnl_sobel(in_stream, out_stream);
+    krnl_sobel(in_stream, out_stream);
 
     // Read outputs
     vector<uint8_t> out_gray;
