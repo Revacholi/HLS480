@@ -63,7 +63,7 @@ make krnl_matrix
 ```
 This adds the component `krnl_matrix` to the same workspace as we used in exercise 1.
 
-This kernel implements matrix matrix multiplication for two 256x256 matrices of ints. In this basic version, it uses one AXI master memory interface to read and write data, and will have a latency of about 40 million clock cycles. What can you do make this faster, how does that affect the designs resource usage?
+This kernel implements matrix matrix multiplication for two 256x256 matrices of ints. In this basic version, it uses one AXI master memory interface to read and write data, and will have a latency of about 40 million clock cycles. What can you do to make this faster, how does that affect the designs resource usage?
 
 Some ideas to explore can be:
 - The number of memory interfaces.
@@ -108,7 +108,7 @@ We will see a lot of AMBA protocols, like AXI or AXI Stream, when working with V
 ## Vitis python interface
 Some have commented on the slugishness of accessing the vitis GUI over an SSH tunnel, to get around this, vitis can also be controlled using a python based CLI.
 
-After having set a workspace, and generated the initial component, by for example running:
+After having setup a workspace, and generated the initial component, by for example running:
 ```bash
 make krnl_fir
 ```
