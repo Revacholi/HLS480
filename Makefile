@@ -57,6 +57,22 @@ $(TEMP_DIR)/krnl_sobel.xo: src/krnl_sobel.cpp src/krnl_sobel.h src/tb_sobel.cpp 
 	$(VPP) --compile --mode hls --work_dir $(TEMP_DIR)/$(kernel)/$(kernel) --config krnl_sobel.cfg src/krnl_sobel.cpp
 	ln -srnf $(TEMP_DIR)/$(kernel)/$(kernel)/$(kernel).xo $@
 
+# FPGA Implementation of Sobel Kernel with AXI4-Stream Interfaces
+
+$(TEMP_DIR)/mm2p.xo: src/mm2p.cpp src/krnl_sobel.h fpga/mm2p.cfg
+	$(eval kernel := mm2p)
+	mkdir -p $(TEMP_DIR)/$(kernel)/$(kernel)
+	$(VPP) --compile --mode hls --work_dir $(TEMP_DIR)/$(kernel)/$(kernel) --config fpga/mm2p.cfg src/mm2p.cpp
+	ln -srnf $(TEMP_DIR)/$(kernel)/$(kernel)/$(kernel).xo $@
+
+$(TEMP_DIR)/p2mm.xo: src/p2mm.cpp src/krnl_sobel.h fpga/p2mm.cfg
+	$(eval kernel := p2mm)
+	mkdir -p $(TEMP_DIR)/$(kernel)/$(kernel)
+	$(VPP) --compile --mode hls --work_dir $(TEMP_DIR)/$(kernel)/$(kernel) --config fpga/p2mm.cfg src/p2mm.cpp
+	ln -srnf $(TEMP_DIR)/$(kernel)/$(kernel)/$(kernel).xo $@
+
+$(TEMP_DIR)/sobel.xclbin: $(TEMP_DIR)/p2mm.xo $(TEMP_DIR)/mm2p.xo $(TEMP_DIR)/krnl_sobel.xo fpga/sobel.ini
+	$(VPP) -t hw --platform $(DEVICE) --config fpga/sobel.ini -l -o $@ $(TEMP_DIR)/p2mm.xo $(TEMP_DIR)/mm2p.xo $(TEMP_DIR)/krnl_sobel.xo -j 4
 
 check-devices:
 ifndef DEVICE

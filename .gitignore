@@ -1,2 +1,6 @@
+_x
 _x.*
+.ipcache
 logs
+*.log
+vitis_journal.*

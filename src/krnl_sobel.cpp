@@ -54,11 +54,10 @@ void downscale(gradient_stream& in, gray_stream& out) {
     const gradient_axis grad = in.read();
     gray_axis tmp;
 
-    ap_int<12> v = grad.data;
-    ap_uint<12> abs_v = hls::abs(v);
-    ap_uint<9> small = (ap_uint<9>)(abs_v >> 3);
-    tmp.data = (128 + (small*(-hls::signbit(v)))).range(7, 0);
-    //tmp.data = grad.data(7,0);
+    auto v = grad.data + 128;
+    if (v < 0) v = 0;
+    if (v > 255) v = 255;
+    tmp.data = (gray_t)(v(7,0));
     tmp.last = grad.last;
     tmp.user = grad.user;
     out.write(tmp);

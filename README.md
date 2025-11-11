@@ -91,6 +91,29 @@ A lot IP cores for processing image streams follow the standard described on pag
 It adds two side channels to the basic AXI stream, SOF(Start Of Frame) sent over the `tuser` signal, and EOL(End Of Line) sent over the `tlast` signal.
 These signals might allow you simplify some logic,and theoretically make it possible to support arbitrary frame sizes, but you will only be required to support fixed sized frames.
 
+## 4. Run on real hardware
+Now, lets take the sobel filter you developed in the last exercise, take it through implementation and run it on an FPGA.
+We will connect it to the two provided components `mm2p`(meory to pixel) and `p2mm`(pixel to memory), which reads an iamge from memory pushes it over an stream and vice versa.
+Instanciating these components/kernels and connecting their stream interfaces is done using the config file `fpga/sobel.ini`, have a look at this, as well as the Makefile target for building `sobel.xclbin`, then start the build by running:
+> **Note**: This takes a while, so it might be smart to start a persistent shell using tmux or screen, so the build isnt killed if your ssh connection fails.
+```bash
+make _x.xilinx_u55c_gen3x16_xdma_3_202210_1/sobel.xclbin
+```
+When this finnishes we can try it out by moving to the `fpga` folder,
+```bash
+cd fpga
+```
+and run the jupyter/python based test code:
+```bash
+jupyter-notebook
+```
+If the ssh session was launched with `-X`, this will open the jupyter notebook in a server side firefox window. If not, or if you want to run it in a local browser anyways, setup a ssh tunnel fo the specific port that your jupyter server is launched with:
+```bash
+ssh -L <port>:localhost:<port> <user>@<server>
+```
+> If you run ssh through vscode, this should be automatic.
+
+Then, in your browser, go to the url printed in the terminal, open `sobel.ipynb` and run through the cells of the notebook.
 
 ## Notes, tips & tricks
 A very useful resource is the Vitis High-Level Synthesis User Guide (UG1399)
