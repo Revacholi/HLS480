@@ -22,18 +22,18 @@ void krnl_matrix(int A[SIZE][SIZE], int B[SIZE][SIZE], int C[SIZE][SIZE]) {
         Solution: create local buffers to read A and B into the FPGA's on-chip BRAM all at once
     **/
     int local_A[SIZE][SIZE];
-    int local_B[SIZE][SIZE];
-    
+    int local_B[SIZE][SIZE];    
+
     localA_i_loop: for (int i = 0; i < SIZE; i++) {
         localA_j_loop: for (int j = 0; j < SIZE; j++) {
-            #pragma HLS PIPELINE II=1
+            #pragma HLS PIPELINE II=2
             local_A[i][j] = A[i][j];
         }
     }
     
     localB_i_loop: for (int i = 0; i < SIZE; i++) {
         localB_j_loop: for (int j = 0; j < SIZE; j++) {
-            #pragma HLS PIPELINE II=1
+            #pragma HLS PIPELINE II=2
             local_B[i][j] = B[i][j];
         }
     }
@@ -41,15 +41,11 @@ void krnl_matrix(int A[SIZE][SIZE], int B[SIZE][SIZE], int C[SIZE][SIZE]) {
 
     i_loop: for (int i = 0; i < SIZE; ++i) {
         j_loop: for (int j = 0; j < SIZE; ++j) {
-            /** 
-                The problem is that the innermost `k` loop is completely serial. 
-                Solution: We add a pipeline pragma to `j_loop`. 
-                If pipeline `k_loop`: it can only speed up the innermost 256 accumulations, but these 256 accumulations are already fast.
-                If pipeline to `i_loop`, the compiler will try to flatten the three loops into one large loop 
-            **/
-            #pragma HLS PIPELINE II=1   // Enable pipeline, II=1,Initiation(new iter) Interval = 1 clk cycle
-            int c = 0;
+            int c = 0;           
             k_loop: for (int k = 0; k < SIZE; ++k) {
+                #pragma HLS PIPELINE II=1
+                #pragma HLS UNROLL factor=16
+                // Enable pipeline, II=1,Initiation(new iter) Interval = 1 clk cycle
                 c = c + local_A[i][k] * local_B[k][j];
             }
             C[i][j] = c;
